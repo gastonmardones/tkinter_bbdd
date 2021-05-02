@@ -1,7 +1,29 @@
 from tkinter import *
+from tkinter import messagebox
 
 root = Tk()
 
+# <----- FUNCIONES ------------>
+
+def salir():
+    value = messagebox.askquestion('salir', '¿Desea salir de la aplicación?')
+    if value == 'yes':
+        root.destroy()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# <---- INTERFAZ GRAFICA ------->
 
 barra_menu = Menu(root)
 root.config(menu=barra_menu, width=300, height=300)
@@ -9,7 +31,7 @@ root.config(menu=barra_menu, width=300, height=300)
 BBDD_menu = Menu(barra_menu, tearoff=0)
 BBDD_menu.add_command(label="Crear")
 BBDD_menu.add_separator()
-BBDD_menu.add_command(label="Salir")
+BBDD_menu.add_command(label="Salir", command=salir)
 
 borrar_menu = Menu(barra_menu, tearoff=0)
 borrar_menu.add_command(label="Borrar campos")
