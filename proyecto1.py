@@ -66,6 +66,21 @@ comentarios_label.grid(padx=5, pady=5, row=5,column=0, sticky='e')
 
 
 
+mi_frame2 = Frame(root)
+mi_frame2.pack()
+
+
+create_button = Button(mi_frame2, text='Create')
+create_button.grid(padx=5, pady=5, row=0, column=0)
+
+read_button = Button(mi_frame2, text='Read')
+read_button.grid(padx=5, pady=5, row=0, column=1)
+
+update_button = Button(mi_frame2, text='Update')
+update_button.grid(padx=5, pady=5, row=0, column=2)
+
+delete_button = Button(mi_frame2, text='Delete')
+delete_button.grid(padx=5, pady=5, row=0, column=3)
 
 
 root.mainloop()
