@@ -21,7 +21,6 @@ def conexionBBDD():
         '''
 
     cnx = mysql.connector.connect(
-                        host='localhost',
         host='localhost',
         user='root',
         password='gaston22',
@@ -100,10 +99,49 @@ def leer():
 
 
 
+
+def actualizar():
+
+    cnx = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='gaston22',
+        database='usuarios'
+    )
+
+    cursor = cnx.cursor()
+
+    sql = '''UPDATE datos_usuarios SET nombre = %s, apellido = %s, password = %s, direccion = %s, comentarios = %s WHERE ID =''' + mi_id.get()
+
+    datos = (nombre.get(), apellido.get(), password.get(),
+             direccion.get(), comentarios_text.get("1.0", END))
+
+    cursor.execute(sql, datos)
+    cnx.commit()
+
+    messagebox.showinfo('BBDD','Registro actualizado con éxito')
+
+
+
+
+def borrar():
     
-        
+    cnx = mysql.connector.connect(
+    host='localhost',
+    user='root',
+    password='gaston22',
+    database='usuarios'
+    )
+
+    cursor = cnx.cursor()
+
+    sql = 'DELETE FROM datos_usuarios WHERE ID='+ mi_id.get()
     
+    cursor.execute(sql)
     
+    cnx.commit()
+
+    messagebox.showinfo('BBDD', 'Registro borrado con éxito')
 
 
 
@@ -139,8 +177,8 @@ limpiar_menu.add_command(label="Limpiar Campos", command=limpiar_campos)
 CRUD_menu = Menu(barra_menu, tearoff=0)
 CRUD_menu.add_command(label="Crear", command=crear)
 CRUD_menu.add_command(label="Leer", command=leer)
-CRUD_menu.add_command(label="Actualizar")
-CRUD_menu.add_command(label="Borrar")
+CRUD_menu.add_command(label="Actualizar", command=actualizar)
+CRUD_menu.add_command(label="Borrar", command=borrar)
 
 ayuda_menu = Menu(barra_menu, tearoff=0)
 ayuda_menu.add_command(label="Licencia")
@@ -185,6 +223,9 @@ comentarios_text = Text(mi_frame, width=16, height=5)
 comentarios_text.grid(padx=5, pady=5, row=5, column=1)
 
 
+scrollVert = Scrollbar(mi_frame, command=comentarios_text.yview)
+scrollVert.grid(row=5, column=2, sticky='nsew')
+comentarios_text.config(yscrollcommand=scrollVert.set)
 
 
 
@@ -222,10 +263,10 @@ create_button.grid(padx=5, pady=5, row=0, column=0)
 read_button = Button(mi_frame2, text='Read', command=leer)
 read_button.grid(padx=5, pady=5, row=0, column=1)
 
-update_button = Button(mi_frame2, text='Update')
+update_button = Button(mi_frame2, text='Update', command=actualizar)
 update_button.grid(padx=5, pady=5, row=0, column=2)
 
-delete_button = Button(mi_frame2, text='Delete')
+delete_button = Button(mi_frame2, text='Delete', command=borrar)
 delete_button.grid(padx=5, pady=5, row=0, column=3)
 
 
