@@ -78,6 +78,34 @@ def crear():
 
 
 
+def leer():
+    
+    cnx = mysql.connector.connect(
+                    host='localhost',
+                    user='root',
+                    password='gaston22',
+                    database='usuarios'
+                    )
+    
+    cursor = cnx.cursor()
+    
+    sql = 'SELECT * FROM datos_usuarios WHERE ID=' + mi_id.get()
+
+    cursor.execute(sql)
+    
+    datos = cursor.fetchall()
+    
+    for i in datos:
+        nombre.set(i[1])
+        apellido.set(i[2])
+        password.set(i[3])
+        direccion.set(i[4])
+        comentarios_text.insert('1.0', i[5])
+    
+        
+    
+    
+
 def limpiar_campos():
     
     mi_id.set('')
@@ -107,7 +135,7 @@ borrar_menu.add_command(label="Limpiar Campos", command=limpiar_campos)
 
 CRUD_menu = Menu(barra_menu, tearoff=0)
 CRUD_menu.add_command(label="Crear", command=crear)
-CRUD_menu.add_command(label="Leer")
+CRUD_menu.add_command(label="Leer", command=leer)
 CRUD_menu.add_command(label="Actualizar")
 CRUD_menu.add_command(label="Borrar")
 
@@ -179,7 +207,7 @@ mi_frame2.pack()
 create_button = Button(mi_frame2, text='Create', command=crear)
 create_button.grid(padx=5, pady=5, row=0, column=0)
 
-read_button = Button(mi_frame2, text='Read')
+read_button = Button(mi_frame2, text='Read', command=leer)
 read_button.grid(padx=5, pady=5, row=0, column=1)
 
 update_button = Button(mi_frame2, text='Update')
