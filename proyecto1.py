@@ -1,6 +1,7 @@
 import mysql.connector
 from tkinter import *
 from tkinter import messagebox
+from tkinter.constants import END
 
 root = Tk()
 
@@ -52,8 +53,28 @@ def salir():
 
 
 
+def crear():
+    
+    cnx = mysql.connector.connect(
+                    host='localhost',
+                    user='root',
+                    password='gaston22',
+                    database='usuarios'
+                    )
+    
+    cursor = cnx.cursor()
+    
 
-
+    sql = 'INSERT INTO datos_usuarios VALUES (NULL, %s, %s, %s, %s, %s)'
+    
+    datos = (nombre.get(), apellido.get(), password.get(),
+             direccion.get(), comentarios_text.get("1.0", END))
+    
+    cursor.execute(sql, datos)
+    
+    cnx.commit()
+    
+    messagebox.showinfo('BBDD', 'Registro insertado con éxito')
 
 
 
@@ -97,14 +118,30 @@ barra_menu.add_cascade(label="Ayuda", menu=ayuda_menu)
 mi_frame = Frame(root)
 mi_frame.pack()
 
+id_entry = StringVar()
+nombre = StringVar()
+apellido = StringVar()
+password = StringVar()
+direccion = StringVar()
 
-id_entry = Entry(mi_frame)
+
+id_entry = Entry(mi_frame, textvariable=id_entry)
 id_entry.grid(padx=5, pady=5, row=0, column=1)
-nombre_entry = Entry(mi_frame).grid(padx=5, pady=5, row=1, column=1)
-apellido_entry = Entry(mi_frame).grid(padx=5, pady=5, row=2, column=1)
-password_entry = Entry(mi_frame).grid(padx=5, pady=5, row=3, column=1)
-direccion_entry = Entry(mi_frame).grid(padx=5, pady=5, row=4, column=1)
-comentarios_text = Text(mi_frame, width=16, height=5).grid(padx=5, pady=5, row=5, column=1)
+
+nombre_entry = Entry(mi_frame, textvariable=nombre)
+nombre_entry.grid(padx=5, pady=5, row=1, column=1)
+
+apellido_entry = Entry(mi_frame, textvariable=apellido)
+apellido_entry.grid(padx=5, pady=5, row=2, column=1)
+
+password_entry = Entry(mi_frame, textvariable=password, show='*')
+password_entry.grid(padx=5, pady=5, row=3, column=1)
+
+direccion_entry = Entry(mi_frame, textvariable=direccion)
+direccion_entry.grid(padx=5, pady=5, row=4, column=1)
+
+comentarios_text = Text(mi_frame, width=16, height=5)
+comentarios_text.grid(padx=5, pady=5, row=5, column=1)
 
 
 
@@ -132,7 +169,7 @@ mi_frame2 = Frame(root)
 mi_frame2.pack()
 
 
-create_button = Button(mi_frame2, text='Create')
+create_button = Button(mi_frame2, text='Create', command=crear)
 create_button.grid(padx=5, pady=5, row=0, column=0)
 
 read_button = Button(mi_frame2, text='Read')
