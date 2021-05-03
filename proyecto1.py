@@ -5,10 +5,11 @@ from tkinter.constants import END
 
 root = Tk()
 
-# <----- FUNCIONES ------------>
+# <-------------------------- FUNCIONES -------------------------------------->
+
 
 def conexionBBDD():
-    
+
     sql = '''
         CREATE TABLE DATOSUSUARIOS(
             ID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -18,17 +19,17 @@ def conexionBBDD():
             DIRECCION VARCHAR (20),
             COMENTARIOS VARCHAR (100))
         '''
-    
+
     cnx = mysql.connector.connect(
                         host='localhost',
-                        user='root',
-                        password='gaston22',
-                        database='usuarios'
-                        )
-    
+        host='localhost',
+        user='root',
+        password='gaston22',
+        database='usuarios'
+    )
+
     cursor = cnx.cursor()
-            
-    
+
     try:
         cursor.execute('''
             CREATE TABLE datos_usuarios(
@@ -38,11 +39,12 @@ def conexionBBDD():
                 PASSWORD VARCHAR (16),
                 DIRECCION VARCHAR (50),
                 COMENTARIOS VARCHAR (100))''')
-        
+
         messagebox.showinfo('BBDD', 'Base de Datos creada con éxito')
-    
+
     except:
         messagebox.showwarning('Atención', 'La Base de Datos ya existe')
+
 
 
 
@@ -53,61 +55,61 @@ def salir():
 
 
 
-def crear():
-    
-    cnx = mysql.connector.connect(
-                    host='localhost',
-                    user='root',
-                    password='gaston22',
-                    database='usuarios'
-                    )
-    
-    cursor = cnx.cursor()
-    
 
+def crear():
+    cnx = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='gaston22',
+        database='usuarios'
+    )
+    cursor = cnx.cursor()
     sql = 'INSERT INTO datos_usuarios VALUES (NULL, %s, %s, %s, %s, %s)'
-    
     datos = (nombre.get(), apellido.get(), password.get(),
              direccion.get(), comentarios_text.get("1.0", END))
-    
     cursor.execute(sql, datos)
-    
     cnx.commit()
-    
     messagebox.showinfo('BBDD', 'Registro insertado con éxito')
 
 
 
+
 def leer():
-    
+
     cnx = mysql.connector.connect(
-                    host='localhost',
-                    user='root',
-                    password='gaston22',
-                    database='usuarios'
-                    )
-    
+        host='localhost',
+        user='root',
+        password='gaston22',
+        database='usuarios'
+    )
+
     cursor = cnx.cursor()
-    
+
     sql = 'SELECT * FROM datos_usuarios WHERE ID=' + mi_id.get()
 
     cursor.execute(sql)
-    
+
     datos = cursor.fetchall()
-    
+
     for i in datos:
         nombre.set(i[1])
         apellido.set(i[2])
         password.set(i[3])
         direccion.set(i[4])
         comentarios_text.insert('1.0', i[5])
+
+
+
     
         
     
     
 
+
+
+
 def limpiar_campos():
-    
+
     mi_id.set('')
     nombre.set('')
     apellido.set('')
@@ -118,8 +120,9 @@ def limpiar_campos():
 
 
 
+# <---------------------------------- INTERFAZ GRAFICA ----------------------------------------->
 
-# <---- INTERFAZ GRAFICA ------->
+# <---------------------------------- BARRA MENU ----------------------------------------------->
 
 barra_menu = Menu(root)
 root.config(menu=barra_menu, width=300, height=300)
@@ -129,8 +132,8 @@ BBDD_menu.add_command(label="Crear", command=conexionBBDD)
 BBDD_menu.add_separator()
 BBDD_menu.add_command(label="Salir", command=salir)
 
-borrar_menu = Menu(barra_menu, tearoff=0)
-borrar_menu.add_command(label="Limpiar Campos", command=limpiar_campos)
+limpiar_menu = Menu(barra_menu, tearoff=0)
+limpiar_menu.add_command(label="Limpiar Campos", command=limpiar_campos)
 
 
 CRUD_menu = Menu(barra_menu, tearoff=0)
@@ -145,10 +148,13 @@ ayuda_menu.add_command(label="Acerca de...")
 
 
 barra_menu.add_cascade(label="BBDD", menu=BBDD_menu)
-barra_menu.add_cascade(label="Borrar", menu=borrar_menu)
+barra_menu.add_cascade(label="Campos", menu=limpiar_menu)
 barra_menu.add_cascade(label="CRUD", menu=CRUD_menu)
 barra_menu.add_cascade(label="Ayuda", menu=ayuda_menu)
 
+
+
+# <--------------------------------------------- ENTRYS ------------------------------------------------->
 
 mi_frame = Frame(root)
 mi_frame.pack()
@@ -180,25 +186,31 @@ comentarios_text.grid(padx=5, pady=5, row=5, column=1)
 
 
 
-id_label = Label(mi_frame,text='ID:')
-id_label.grid(padx=5, pady=5, row=0,column=0, sticky='e')
-
-nombre_label = Label(mi_frame,text='Nombre:')
-nombre_label.grid(padx=5, pady=5, row=1,column=0, sticky='e')
-
-apellido_label = Label(mi_frame,text='Apellido:')
-apellido_label.grid(padx=5, pady=5, row=2,column=0, sticky='e')
-
-password_label = Label(mi_frame,text='Contraseña:')
-password_label.grid(padx=5, pady=5, row=3,column=0, sticky='e')
-
-direccion_label = Label(mi_frame,text='Direccion:')
-direccion_label.grid(padx=5, pady=5, row=4,column=0, sticky='e')
-
-comentarios_label = Label(mi_frame,text='Comentarios:')
-comentarios_label.grid(padx=5, pady=5, row=5,column=0, sticky='e')
 
 
+# <-------------------------------------------------- LABELS ---------------------------------------------------->
+
+id_label = Label(mi_frame, text='ID:')
+id_label.grid(padx=5, pady=5, row=0, column=0, sticky='e')
+
+nombre_label = Label(mi_frame, text='Nombre:')
+nombre_label.grid(padx=5, pady=5, row=1, column=0, sticky='e')
+
+apellido_label = Label(mi_frame, text='Apellido:')
+apellido_label.grid(padx=5, pady=5, row=2, column=0, sticky='e')
+
+password_label = Label(mi_frame, text='Contraseña:')
+password_label.grid(padx=5, pady=5, row=3, column=0, sticky='e')
+
+direccion_label = Label(mi_frame, text='Direccion:')
+direccion_label.grid(padx=5, pady=5, row=4, column=0, sticky='e')
+
+comentarios_label = Label(mi_frame, text='Comentarios:')
+comentarios_label.grid(padx=5, pady=5, row=5, column=0, sticky='e')
+
+
+
+# <----------------------------------------------------- CRUD BUTTONS ------------------------------------------------------------>
 
 mi_frame2 = Frame(root)
 mi_frame2.pack()
