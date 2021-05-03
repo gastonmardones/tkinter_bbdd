@@ -78,7 +78,14 @@ def crear():
 
 
 
-
+def limpiar_campos():
+    
+    mi_id.set('')
+    nombre.set('')
+    apellido.set('')
+    password.set('')
+    direccion.set('')
+    comentarios_text.delete('1.0', END)
 
 
 
@@ -95,7 +102,7 @@ BBDD_menu.add_separator()
 BBDD_menu.add_command(label="Salir", command=salir)
 
 borrar_menu = Menu(barra_menu, tearoff=0)
-borrar_menu.add_command(label="Borrar campos")
+borrar_menu.add_command(label="Limpiar Campos", command=limpiar_campos)
 
 
 CRUD_menu = Menu(barra_menu, tearoff=0)
@@ -118,14 +125,14 @@ barra_menu.add_cascade(label="Ayuda", menu=ayuda_menu)
 mi_frame = Frame(root)
 mi_frame.pack()
 
-id_entry = StringVar()
+mi_id = StringVar()
 nombre = StringVar()
 apellido = StringVar()
 password = StringVar()
 direccion = StringVar()
 
 
-id_entry = Entry(mi_frame, textvariable=id_entry)
+id_entry = Entry(mi_frame, textvariable=mi_id)
 id_entry.grid(padx=5, pady=5, row=0, column=1)
 
 nombre_entry = Entry(mi_frame, textvariable=nombre)
