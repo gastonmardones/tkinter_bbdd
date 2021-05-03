@@ -1,9 +1,49 @@
+import mysql.connector
 from tkinter import *
 from tkinter import messagebox
 
 root = Tk()
 
 # <----- FUNCIONES ------------>
+
+def conexionBBDD():
+    
+    sql = '''
+        CREATE TABLE DATOSUSUARIOS(
+            ID INTEGER PRIMARY KEY AUTOINCREMENT,
+            NOMBRE VARCHAR (20),
+            APELLIDO VARCHAR (20),
+            PASSWORD VARCHAR (20),
+            DIRECCION VARCHAR (20),
+            COMENTARIOS VARCHAR (100))
+        '''
+    
+    cnx = mysql.connector.connect(
+                        host='localhost',
+                        user='root',
+                        password='gaston22',
+                        database='usuarios'
+                        )
+    
+    cursor = cnx.cursor()
+            
+    
+    try:
+        cursor.execute('''
+            CREATE TABLE datos_usuarios(
+                ID INT PRIMARY KEY AUTO_INCREMENT,
+                NOMBRE VARCHAR (30),
+                APELLIDO VARCHAR (30),
+                PASSWORD VARCHAR (16),
+                DIRECCION VARCHAR (50),
+                COMENTARIOS VARCHAR (100))''')
+        
+        messagebox.showinfo('BBDD', 'Base de Datos creada con éxito')
+    
+    except:
+        messagebox.showwarning('Atención', 'La Base de Datos ya existe')
+
+
 
 def salir():
     value = messagebox.askquestion('salir', '¿Desea salir de la aplicación?')
@@ -29,7 +69,7 @@ barra_menu = Menu(root)
 root.config(menu=barra_menu, width=300, height=300)
 
 BBDD_menu = Menu(barra_menu, tearoff=0)
-BBDD_menu.add_command(label="Crear")
+BBDD_menu.add_command(label="Crear", command=conexionBBDD)
 BBDD_menu.add_separator()
 BBDD_menu.add_command(label="Salir", command=salir)
 
@@ -38,7 +78,7 @@ borrar_menu.add_command(label="Borrar campos")
 
 
 CRUD_menu = Menu(barra_menu, tearoff=0)
-CRUD_menu.add_command(label="Crear")
+CRUD_menu.add_command(label="Crear", command=crear)
 CRUD_menu.add_command(label="Leer")
 CRUD_menu.add_command(label="Actualizar")
 CRUD_menu.add_command(label="Borrar")
