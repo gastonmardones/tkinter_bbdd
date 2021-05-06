@@ -1,2 +1,2 @@
 # interfaz_grafica_1
- Primera interfaz grafica con Tkinter y MySQL
+ App basica para crear, actualizar y borrar registros de una base de datos.
